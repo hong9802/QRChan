@@ -1,5 +1,7 @@
 package com.bread_cat.anti_qr_smishing
 
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.zxing.integration.android.IntentIntegrator
@@ -7,6 +9,7 @@ import com.google.zxing.integration.android.IntentResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class QRCodeScan(private val act: MainActivity) {
     private val apiKey = "YOUR API KEY" // Safe Browsing API 키
@@ -17,6 +20,19 @@ class QRCodeScan(private val act: MainActivity) {
         intentIntegrator.setOrientationLocked(false)
         intentIntegrator.setBeepEnabled(false)
         activityResult.launch(intentIntegrator.createScanIntent())
+    }
+
+    fun openSafeUrl(url: String) {
+        if(url.isNullOrEmpty()) {
+            Toast.makeText(act, "유효하지 않은 URL입니다.", Toast.LENGTH_SHORT).show()
+        }
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            act.startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(act, "웹 브라우저 설치를 확인해주세요.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private val activityResult = act.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -60,6 +76,7 @@ class QRCodeScan(private val act: MainActivity) {
                 } else {
                     // 안전한 사이트
                     Toast.makeText(act, "안전한 사이트입니다: $scannedUrl", Toast.LENGTH_SHORT).show()
+                    openSafeUrl(scannedUrl)
                 }
             }
 

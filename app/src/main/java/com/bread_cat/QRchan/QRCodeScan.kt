@@ -15,8 +15,6 @@ import retrofit2.Response
 import java.lang.Exception
 
 class QRCodeScan(private val act: MainActivity) {
-    private val apiKey = "YOUR API KEY" // Safe Browsing API 키
-
     fun startQRscan() {
         val intentIntegrator = IntentIntegrator(act)
         intentIntegrator.setPrompt("안내선 안에 QR코드를 맞춰주세요")
@@ -102,6 +100,8 @@ class QRCodeScan(private val act: MainActivity) {
     }
 
     private fun checkUrlSafety(scannedUrl: String) {
+        val apiKey = "YOUR API KEY" // Safe Browsing API 키
+
         // 요청 모델 생성
         val request = SafeBrowsingRequest(
             client = ClientInfo("anti_qr_smishing", "1.0"),
@@ -114,7 +114,7 @@ class QRCodeScan(private val act: MainActivity) {
         )
 
         val service = RetrofitClient.getService()
-        val call = service.checkUrl(request)
+        val call = service.checkUrl(apiKey, request)
 
         // API 호출
         call.enqueue(object : Callback<SafeBrowsingResponse> {

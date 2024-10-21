@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Anti_QR_smishing"
+rootProject.name = "QRchan"
 include(":app")
  

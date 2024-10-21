@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.bread_cat.anti_qr_smishing"
+    namespace = "com.bread_cat.QRchan"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.bread_cat.anti_qr_smishing"
+        applicationId = "com.bread_cat.QRchan"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

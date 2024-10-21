@@ -1,11 +1,8 @@
-package com.bread_cat.anti_qr_smishing
+package com.bread_cat.QRchan
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.bread_cat.anti_qr_smishing.databinding.ActivityMainBinding
+import com.bread_cat.QRchan.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

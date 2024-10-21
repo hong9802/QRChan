@@ -1,4 +1,4 @@
-package com.bread_cat.anti_qr_smishing
+package com.bread_cat.QRchan
 
 import org.junit.jupiter.api.Test
 

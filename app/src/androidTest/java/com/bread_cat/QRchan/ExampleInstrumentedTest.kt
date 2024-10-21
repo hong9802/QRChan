@@ -1,11 +1,9 @@
-package com.bread_cat.anti_qr_smishing
+package com.bread_cat.QRchan
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import org.junit.runner.RunWith
-
 import org.junit.Assert.*
 
 /**
@@ -15,7 +13,7 @@ import org.junit.Assert.*
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
-    @org.junit.jupiter.api.Test
+    @Test
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext

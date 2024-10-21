@@ -1,4 +1,4 @@
-package com.bread_cat.anti_qr_smishing
+package com.bread_cat.QRchan
 
 import retrofit2.Call
 import retrofit2.http.Body

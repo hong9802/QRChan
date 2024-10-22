@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.ContactsContract
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.zxing.integration.android.IntentIntegrator
@@ -46,6 +47,7 @@ class QRCodeScan(private val act: MainActivity) {
         when {
             content.startsWith("WIFI:") -> handleWifiQRCode(content)
             content.startsWith("http") -> checkUrlSafety(content)
+            content.startsWith("BEGIN:VCARD") || content.startsWith("MECARD:") -> handleContactQRCode(content)
             else -> {
                 Toast.makeText(act, "QR 코드 내용: $content", Toast.LENGTH_SHORT).show()
                 // 다른 형식의 QR 코드일 경우 추가 처리
@@ -74,6 +76,53 @@ class QRCodeScan(private val act: MainActivity) {
         } else {
             Toast.makeText(act, "유효하지 않은 와이파이 QR 코드입니다.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun handleContactQRCode(content: String) {
+        val contactIntent = Intent(Intent.ACTION_INSERT).apply {
+            type = ContactsContract.RawContacts.CONTENT_TYPE
+
+            if (content.startsWith("BEGIN:VCARD")) {
+                val vcard = parseVCard(content)
+                putExtra(ContactsContract.Intents.Insert.NAME, vcard["name"])
+                putExtra(ContactsContract.Intents.Insert.PHONE, vcard["phone"])
+                putExtra(ContactsContract.Intents.Insert.EMAIL, vcard["email"])
+            } else if (content.startsWith("MECARD")) {
+                val mecard = parseMECARD(content)
+                putExtra(ContactsContract.Intents.Insert.NAME, mecard["name"])
+                putExtra(ContactsContract.Intents.Insert.PHONE, mecard["phone"])
+                putExtra(ContactsContract.Intents.Insert.EMAIL, mecard["email"])
+            }
+        }
+        act.startActivity(contactIntent)
+    }
+
+    private fun parseVCard(vcard: String): Map<String, String> {
+        val contactInfo = mutableMapOf<String, String>()
+        val lines = vcard.split("\n")
+        for (line in lines) {
+            when {
+                line.startsWith("FN:") -> contactInfo["name"] = line.substringAfter("FN:")
+                line.startsWith("TEL:") -> contactInfo["phone"] = line.substringAfter("TEL:")
+                line.startsWith("EMAIL:") -> contactInfo["email"] = line.substringAfter("EMAIL:")
+            }
+        }
+        return contactInfo
+    }
+
+    private fun parseMECARD(mecard: String): Map<String, String> {
+        val contactInfo = mutableMapOf<String, String>()
+        val params = mecard.substringAfter("MECARD:").split(";")
+
+        for (param in params) {
+            when {
+                param.startsWith("N:") -> contactInfo["name"] = param.substringAfter("N:")
+                param.startsWith("TEL:") -> contactInfo["phone"] = param.substringAfter("TEL:")
+                param.startsWith("EMAIL:") -> contactInfo["email"] = param.substringAfter("EMAIL:")
+            }
+        }
+
+        return contactInfo
     }
 
     private fun copyToClipboard(label: String, text: String) {

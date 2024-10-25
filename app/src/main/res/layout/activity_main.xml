@@ -2,19 +2,69 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/qr_scan_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start QR SCAN!"
+    <FrameLayout
+        android:id="@+id/outer_frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/border_red"
+        android:padding="4dp">
+
+        <GridLayout
+            android:id="@+id/button_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:rowCount="2"
+            android:columnCount="2"
+            android:alignmentMode="alignMargins"
+            android:useDefaultMargins="true">
+
+            <Button
+                android:id="@+id/qr_scan_button"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@drawable/rec_button"
+                android:text="QR 스캔"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"/>
+
+            <Button
+                android:id="@+id/qr_gallery_scan_button"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:text="QR 갤러리 스캔"
+                android:background="@drawable/rec_button"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"/>
+
+            <Button
+                android:id="@+id/qr_history_button"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:text="QR 내역"
+                android:background="@drawable/rec_button"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"/>
+
+            <Button
+                android:id="@+id/qr_create_button"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:text="QR 제작"
+                android:background="@drawable/rec_button"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"/>
+
+        </GridLayout>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

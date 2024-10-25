@@ -1,13 +1,19 @@
 package com.bread_cat.QRchan
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.ContactsContract
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.zxing.BinaryBitmap
+import com.google.zxing.MultiFormatReader
+import com.google.zxing.RGBLuminanceSource
+import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import retrofit2.Call
@@ -145,6 +151,38 @@ class QRCodeScan(private val act: MainActivity) {
             }
         } else {
             Toast.makeText(act, "QR코드 스캔에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        galleryResultLauncher.launch(intent)
+    }
+
+    private val galleryResultLauncher = act.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val data = result.data
+        if (result.resultCode == Activity.RESULT_OK && data != null) {
+            val imageUri: Uri? = data.data
+            if (imageUri != null) {
+                extractQRCodeFromImage(imageUri)
+            } else {
+                Toast.makeText(act, "이미지를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun extractQRCodeFromImage(imageUri: Uri) {
+        val bitmap = MediaStore.Images.Media.getBitmap(act.contentResolver, imageUri)
+        val intArray = IntArray(bitmap.width * bitmap.height)
+        bitmap.getPixels(intArray, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+        val source = RGBLuminanceSource(bitmap.width, bitmap.height, intArray)
+        val binaryBitmap = BinaryBitmap(HybridBinarizer(source))
+        try {
+            val result = MultiFormatReader().decode(binaryBitmap)
+            handleQRCodeContent(result.text)
+        } catch (e: Exception) {
+            Toast.makeText(act, "QR 코드를 인식할 수 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 

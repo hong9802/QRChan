@@ -20,5 +20,10 @@ class MainActivity : AppCompatActivity() {
         binding.qrGalleryScanButton.setOnClickListener() {
             qrCodeScan.pickImageFromGallery()
         }
+        binding.qrHistoryButton.setOnClickListener() {
+            val intent = Intent(this, QRHistoryActivity::class.java)
+            intent.putExtra("qrRecords", ArrayList(qrCodeScan.qrRecords))
+            startActivity(intent)
+        }
     }
 }

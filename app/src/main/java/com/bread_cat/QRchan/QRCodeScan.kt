@@ -20,14 +20,24 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class QRCodeScan(private val act: MainActivity) {
+
+    val qrRecords = mutableListOf<QRRecord>()
     fun startQRscan() {
         val intentIntegrator = IntentIntegrator(act)
         intentIntegrator.setPrompt("안내선 안에 QR코드를 맞춰주세요")
         intentIntegrator.setOrientationLocked(false)
         intentIntegrator.setBeepEnabled(false)
         activityResult.launch(intentIntegrator.createScanIntent())
+    }
+
+    private fun addQRRecord(content: String) {
+        var currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        qrRecords.add(QRRecord(content, currentTime))
     }
 
     fun openSafeUrl(url: String) {
@@ -50,6 +60,7 @@ class QRCodeScan(private val act: MainActivity) {
     }
 
     private fun handleQRCodeContent(content: String) {
+        addQRRecord(content)
         when {
             content.startsWith("WIFI:") -> handleWifiQRCode(content)
             content.startsWith("http") -> checkUrlSafety(content)

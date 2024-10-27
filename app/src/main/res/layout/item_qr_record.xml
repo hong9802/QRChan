@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/qr_content_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="QR 내용"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:padding="4dp" />
+
+    <TextView
+        android:id="@+id/qr_date_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="날짜"
+        android:textSize="12sp"
+        android:textColor="#777777"
+        android:padding="2dp" />
+</LinearLayout>

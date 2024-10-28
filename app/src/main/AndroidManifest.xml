@@ -26,6 +26,7 @@
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation"/>
         <activity android:name=".QRHistoryActivity"/>
+        <activity android:name=".QRGenerateActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

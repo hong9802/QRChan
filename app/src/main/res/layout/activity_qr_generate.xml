@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioUrl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="URL" />
+
+        <RadioButton
+            android:id="@+id/radioContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="연락처" />
+
+        <RadioButton
+            android:id="@+id/radioWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WiFi" />
+    </RadioGroup>
+
+    <!-- URL 입력 필드 -->
+    <LinearLayout
+        android:id="@+id/urlInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/urlInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="URL 입력" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contactLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/contactNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이름" />
+
+        <EditText
+            android:id="@+id/contactPhoneInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="전화번호" />
+
+        <EditText
+            android:id="@+id/contactEmailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이메일" />
+
+        <EditText
+            android:id="@+id/contactAddressInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="주소 (선택)" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wifiLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/wifiSsidInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="SSID" />
+
+        <EditText
+            android:id="@+id/wifiPasswordInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="비밀번호" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/generateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="QR 코드 생성" />
+
+    <ImageView
+        android:id="@+id/qrCodeImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:contentDescription="QR 코드 미리보기" />
+
+</LinearLayout>

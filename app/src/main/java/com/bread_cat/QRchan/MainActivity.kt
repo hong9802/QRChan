@@ -25,5 +25,9 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("qrRecords", ArrayList(qrCodeScan.qrRecords))
             startActivity(intent)
         }
+        binding.qrCreateButton.setOnClickListener() {
+            val intent = Intent(this, QRGenerateActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

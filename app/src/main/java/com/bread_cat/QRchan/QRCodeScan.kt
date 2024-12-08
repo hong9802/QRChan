@@ -1,6 +1,7 @@
 package com.bread_cat.QRchan
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -197,6 +198,51 @@ class QRCodeScan(private val act: MainActivity) {
         }
     }
 
+    private fun showWarningDialog(context: Context, scannedUrl: String) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("경고: 잠재적으로 위험한 사이트")
+        builder.setMessage(
+            """
+            Google Safe Browsing API에 따르면 이 URL이 잠재적으로 위험할 수 있는 사이트로 식별되었습니다.
+            URL: $scannedUrl
+
+            이 사이트는 다음과 같은 위험을 포함할 수 있습니다:
+            - 소셜 엔지니어링(피싱): 사용자를 속여 개인 정보를 유출하도록 유도할 수 있습니다.
+            - 멀웨어: 사용자의 기기에 해를 끼칠 수 있는 악성 코드를 포함할 수 있습니다.
+            - 원치 않는 소프트웨어: 브라우저 환경에 영향을 주는 프로그램이 포함될 수 있습니다.
+            - 잠재적으로 유해한 애플리케이션(PHA): 사용자 정보를 도용하거나 삭제할 수 있는 위험한 앱을 설치하려 시도할 수 있습니다.
+
+            경고는 Google Safe Browsing 데이터를 기반으로 생성되었습니다. 추가적인 정보는 아래 링크를 참조하세요:
+            - Google Safe Browsing API: https://developers.google.com/safe-browsing
+            - 소셜 엔지니어링 방지 정보: www.antiphishing.org
+
+            (이 경고는 Google Safe Browsing API 데이터를 기반으로 생성되었습니다.)
+    """.trimIndent()
+        )
+
+        builder.setCancelable(true)
+
+        builder.setPositiveButton("확인") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("잠재적 위험을 인지하고 접속") { _, _ ->
+            openSafeUrl(context, scannedUrl)
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+
+
+    private fun openSafeUrl(context: Context, scannedUrl: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(scannedUrl))
+        context.startActivity(intent)
+    }
+
+
+
     private fun checkUrlSafety(scannedUrl: String) {
         val apiKey = "YOUR API KEY" // Safe Browsing API 키
 
@@ -204,7 +250,7 @@ class QRCodeScan(private val act: MainActivity) {
         val request = SafeBrowsingRequest(
             client = ClientInfo("anti_qr_smishing", "1.0"),
             threatInfo = ThreatInfo(
-                threatTypes = listOf("MALWARE", "SOCIAL_ENGINEERING"),  // 멀웨어 및 피싱 검사
+                threatTypes = listOf("MALWARE", "SOCIAL_ENGINEERING", "THREAT_TYPE_UNSPECIFIED", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"),  // 멀웨어 및 피싱 검사
                 platformTypes = listOf("ANY_PLATFORM"),
                 threatEntryTypes = listOf("URL"),
                 threatEntries = listOf(ThreatEntry(scannedUrl))
@@ -219,7 +265,7 @@ class QRCodeScan(private val act: MainActivity) {
             override fun onResponse(call: Call<SafeBrowsingResponse>, response: Response<SafeBrowsingResponse>) {
                 if (response.isSuccessful && response.body()?.matches != null) {
                     // URL이 악성 사이트로 판명됨
-                    Toast.makeText(act, "위험한 사이트입니다: $scannedUrl", Toast.LENGTH_LONG).show()
+                    showWarningDialog(act, scannedUrl)
                 } else {
                     // 안전한 사이트
                     Toast.makeText(act, "안전한 사이트입니다: $scannedUrl", Toast.LENGTH_SHORT).show()

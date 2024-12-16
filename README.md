@@ -1,6 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Anti_qshing
 =======
+=======
+>>>>>>> c5ddf9e (Add LICENSE PAGE and ETC...)
 # QRChan
 
 QRChan은 QR 코드를 안전하게 인식하고 편하게 사용하기 위해 개발된 앱입니다.
@@ -48,4 +51,7 @@ QRChan은 QR 코드를 안전하게 인식하고 편하게 사용하기 위해 �
 
 이 프로젝트는 **Apache License 2.0** 하에 배포됩니다.  
 자세한 내용은 [LICENSE 파일](./LICENSE)을 확인하세요.
+<<<<<<< HEAD
+>>>>>>> c5ddf9e (Add LICENSE PAGE and ETC...)
+=======
 >>>>>>> c5ddf9e (Add LICENSE PAGE and ETC...)
